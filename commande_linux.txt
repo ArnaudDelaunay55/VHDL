@@ -1,0 +1,6 @@
+ghdl -a fichier_architecture.vhd
+ghdl -a fichier_bench.vhd
+ghdl -e fichier_bench
+ghdl -r fichier_bench
+ghdl -r fichier_bench --wave=wave.ghw
+gtkwave wave.ghw
