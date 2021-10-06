@@ -1,0 +1,40 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+-- ici le composant à tester est une porte ET
+
+entity testbench is
+end testbench;
+
+architecture Behavioral of testbench is
+  -- Signaux internes à l'achitecture de test (pas les signaux du composant à tester)
+  signal entree1, entree2, sortie : STD_LOGIC;
+  -- Déclaration du composant à tester
+  component porteET is 
+    port(entreeC1, entreeC2 : in STD_LOGIC; 
+          SortieC : out STD_LOGIC);
+  end component;
+
+  constant MAX : natural := 6;
+
+  begin
+  -- instantiation du composant porteET
+  -- Mapping des signaux internes à l'architecture de test vers les signaux du composant
+  uut: porteET
+  	generic map(N => MAX)
+  	port map(
+          entreeC1 => entree1,
+          entreeC2 => entree2,
+          SortieC => sortie);
+
+  entree1_stimuli : process
+  begin
+    entree1 <= '0'; wait for 5ns;
+    entree1 <= '1'; wait for 5ns;
+  end process entree1_stimuli;
+
+  entree2_stimuli : process
+  begin
+    entree2 <= '0'; wait for 10ns;
+    entree2 <= '1'; wait;
+    end process entree2_stimuli;
+end Behavioral;

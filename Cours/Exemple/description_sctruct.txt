@@ -1,0 +1,53 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+-- déscription d'un composant composer d'une porte and et d'un FDCE
+
+-- Déscription global des entrer et sortie du composant sans entrer au sein meme
+entity monComposant is 
+	port (a,b,clear,clk,clkEn : in std_logic; c : out std_logic);
+end monComposant;
+
+-- description interne du composant
+architecture Behavioral of monComposant is
+	-- signaux au sein du composant
+	signal D_interne : std_logic;
+
+-- Description des entrer sortie d'un composant contenue dans notre composant
+component AND2
+	port (I0, I1 : in std_logic; O : out std_logic);
+end component;
+
+component FDCE
+	generic(INIT: bit := '0'); -- initialiser a 0
+	port ( C, CE, CLR, D : in std_logic; Q : out :std_logic);
+end component;
+
+-- liaison entre les sortie exterieur du composant et les sortie des composant interne 
+begin
+	XLXI_1 : AND2
+		port map( I0 => b, I1 => a, O => D_interne);
+	XLXI_2 : FDCE
+		port map( C => clk, CE => clkEn, CLR => clear, D => D_interne, Q => c);
+end Behavioral;
+
+------------------------------------------------------------
+-- autre maniere de décrire un composant :
+-- Description porteET
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Différente entrer et sortie de notre composant
+entity monComposant is 
+	port (a,b : in std_logic; s : out std_logic);
+end monComposant;
+
+-- Description de notre composant via un process
+architecture Behavioral of porteET is
+begin 
+	p1 : process
+	begin
+		if a = '1' and b='1' then s <= '1'; else s <= '0'; end if;
+	end process p1;
+
+end Behavioral;
