@@ -1,38 +1,45 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_SIGNED.ALL;
+
+
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+
 
 entity diviseur is
-    port (TP : in STD_LOGIC_VECTOR(19 downto 0);
-    RST,H : in STD_LOGIC;
-    clk_div : out STD_LOGIC);
+
+    Port (rst,clk: in std_logic;
+          tp: in std_logic_vector (19 downto 0);
+          clk_out: out std_logic);
+    
 end diviseur;
 
 architecture Behavioral of diviseur is
-signal t : STD_LOGIC_VECTOR(19 downto 0);
+        
+
+	   signal t : std_logic_vector (19 downto 0); --init à zéro
+	   
 begin
-
-p1: process(H,RST)
-    begin
-        if RST = '1' then
-            t <= TP;
-        elsif H'event and H = '1' then
-            if t = 0 then 
-                t <= TP;
-            else 
-                t <= t-1;
-            end if;
-        end if;
-    end process;
-
-p2:process(t)
-    begin
-        if t = 0 then 
-            clk_div <= '1';
-        else
-            clk_div <= '0';
-        end if;
-   end process;
-   
+        process_diviseur: process(rst,clk)
+            begin                
+            if rst = '1' then
+                t <= tp;
+            elsif clk'event and clk = '1' then
+                if t = 0 then
+                    t <= tp;
+                else
+                    t <= t-1;
+                end if;    
+            end if;             
+        end process;
+        
+        process_reg: process(t)
+            begin
+            if t = 0 then
+                clk_out <= '1';
+            else
+                clk_out <= '0';
+            end if;            
+        end process;
 end Behavioral;
-
